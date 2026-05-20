@@ -16,6 +16,89 @@ const CONFIG = {
 };
 
 // ====================================================================
+// Country codes (Middle East prioritised, then the rest A→Z)
+// ====================================================================
+const COUNTRY_CODES = [
+  // Most common for VV Clinical Center patients
+  { code: '+961', flag: '🇱🇧', name: 'Lebanon' },
+  { code: '+971', flag: '🇦🇪', name: 'United Arab Emirates' },
+  { code: '+966', flag: '🇸🇦', name: 'Saudi Arabia' },
+  { code: '+965', flag: '🇰🇼', name: 'Kuwait' },
+  { code: '+974', flag: '🇶🇦', name: 'Qatar' },
+  { code: '+973', flag: '🇧🇭', name: 'Bahrain' },
+  { code: '+968', flag: '🇴🇲', name: 'Oman' },
+  { code: '+962', flag: '🇯🇴', name: 'Jordan' },
+  { code: '+963', flag: '🇸🇾', name: 'Syria' },
+  { code: '+964', flag: '🇮🇶', name: 'Iraq' },
+  { code: '+20',  flag: '🇪🇬', name: 'Egypt' },
+  { code: '+970', flag: '🇵🇸', name: 'Palestine' },
+  { code: '+967', flag: '🇾🇪', name: 'Yemen' },
+  { code: '+218', flag: '🇱🇾', name: 'Libya' },
+  { code: '+216', flag: '🇹🇳', name: 'Tunisia' },
+  { code: '+213', flag: '🇩🇿', name: 'Algeria' },
+  { code: '+212', flag: '🇲🇦', name: 'Morocco' },
+  { code: '+98',  flag: '🇮🇷', name: 'Iran' },
+  { code: '+90',  flag: '🇹🇷', name: 'Turkey' },
+
+  // Frequently-used international
+  { code: '+1',   flag: '🇺🇸', name: 'United States' },
+  { code: '+1',   flag: '🇨🇦', name: 'Canada' },
+  { code: '+44',  flag: '🇬🇧', name: 'United Kingdom' },
+  { code: '+33',  flag: '🇫🇷', name: 'France' },
+  { code: '+49',  flag: '🇩🇪', name: 'Germany' },
+  { code: '+39',  flag: '🇮🇹', name: 'Italy' },
+  { code: '+34',  flag: '🇪🇸', name: 'Spain' },
+  { code: '+31',  flag: '🇳🇱', name: 'Netherlands' },
+  { code: '+32',  flag: '🇧🇪', name: 'Belgium' },
+  { code: '+41',  flag: '🇨🇭', name: 'Switzerland' },
+  { code: '+43',  flag: '🇦🇹', name: 'Austria' },
+  { code: '+30',  flag: '🇬🇷', name: 'Greece' },
+  { code: '+351', flag: '🇵🇹', name: 'Portugal' },
+  { code: '+46',  flag: '🇸🇪', name: 'Sweden' },
+  { code: '+47',  flag: '🇳🇴', name: 'Norway' },
+  { code: '+45',  flag: '🇩🇰', name: 'Denmark' },
+  { code: '+358', flag: '🇫🇮', name: 'Finland' },
+  { code: '+353', flag: '🇮🇪', name: 'Ireland' },
+  { code: '+48',  flag: '🇵🇱', name: 'Poland' },
+  { code: '+420', flag: '🇨🇿', name: 'Czech Republic' },
+  { code: '+36',  flag: '🇭🇺', name: 'Hungary' },
+  { code: '+40',  flag: '🇷🇴', name: 'Romania' },
+  { code: '+7',   flag: '🇷🇺', name: 'Russia' },
+  { code: '+380', flag: '🇺🇦', name: 'Ukraine' },
+  { code: '+61',  flag: '🇦🇺', name: 'Australia' },
+  { code: '+64',  flag: '🇳🇿', name: 'New Zealand' },
+  { code: '+81',  flag: '🇯🇵', name: 'Japan' },
+  { code: '+82',  flag: '🇰🇷', name: 'South Korea' },
+  { code: '+86',  flag: '🇨🇳', name: 'China' },
+  { code: '+852', flag: '🇭🇰', name: 'Hong Kong' },
+  { code: '+65',  flag: '🇸🇬', name: 'Singapore' },
+  { code: '+60',  flag: '🇲🇾', name: 'Malaysia' },
+  { code: '+66',  flag: '🇹🇭', name: 'Thailand' },
+  { code: '+62',  flag: '🇮🇩', name: 'Indonesia' },
+  { code: '+63',  flag: '🇵🇭', name: 'Philippines' },
+  { code: '+84',  flag: '🇻🇳', name: 'Vietnam' },
+  { code: '+91',  flag: '🇮🇳', name: 'India' },
+  { code: '+92',  flag: '🇵🇰', name: 'Pakistan' },
+  { code: '+880', flag: '🇧🇩', name: 'Bangladesh' },
+  { code: '+27',  flag: '🇿🇦', name: 'South Africa' },
+  { code: '+234', flag: '🇳🇬', name: 'Nigeria' },
+  { code: '+254', flag: '🇰🇪', name: 'Kenya' },
+  { code: '+55',  flag: '🇧🇷', name: 'Brazil' },
+  { code: '+54',  flag: '🇦🇷', name: 'Argentina' },
+  { code: '+52',  flag: '🇲🇽', name: 'Mexico' },
+];
+
+function populateCountryCodes() {
+  const selects = document.querySelectorAll('#phone1Code, #phone2Code');
+  selects.forEach((sel) => {
+    sel.innerHTML = COUNTRY_CODES.map(
+      (c, i) =>
+        `<option value="${c.code}"${c.code === '+961' && i === 0 ? ' selected' : ''}>${c.flag} ${c.code}</option>`
+    ).join('');
+  });
+}
+
+// ====================================================================
 // i18n strings
 // ====================================================================
 const I18N = {
@@ -233,6 +316,9 @@ function collectFormData(form) {
       data[key] = [data[key], value];
     }
   }
+  // Combine country code + phone into E.164-ish strings
+  if (data.phone1) data.phone1Full = `${data.phone1Code || ''} ${data.phone1}`.trim();
+  if (data.phone2) data.phone2Full = `${data.phone2Code || ''} ${data.phone2}`.trim();
   data._submittedAt = new Date().toISOString();
   data._language = currentLang;
   return data;
@@ -298,6 +384,9 @@ async function postToGoogle() {
 // Init
 // ====================================================================
 document.addEventListener('DOMContentLoaded', () => {
+  // Populate country code dropdowns
+  populateCountryCodes();
+
   // Restore language
   let saved = 'en';
   try { saved = localStorage.getItem('vv_lang') || 'en'; } catch {}

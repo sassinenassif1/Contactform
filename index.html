@@ -16,6 +16,8 @@
     <span class="blob blob-1"></span>
     <span class="blob blob-2"></span>
     <span class="blob blob-3"></span>
+    <span class="blob blob-4"></span>
+    <span class="blob blob-5"></span>
   </div>
 
   <!-- Language toggle -->
@@ -65,11 +67,17 @@
           </div>
           <div class="field">
             <label for="phone1" data-i18n="field.phone1">Phone (WhatsApp)</label>
-            <input id="phone1" name="phone1" type="tel" inputmode="tel" autocomplete="tel" placeholder="+961 …" required />
+            <div class="phone-group">
+              <select id="phone1Code" name="phone1Code" aria-label="Country code" required></select>
+              <input id="phone1" name="phone1" type="tel" inputmode="tel" autocomplete="tel" placeholder="71 123 456" required />
+            </div>
           </div>
           <div class="field">
             <label for="phone2" data-i18n="field.phone2">Alternate Phone <span class="muted" data-i18n="optional">(optional)</span></label>
-            <input id="phone2" name="phone2" type="tel" inputmode="tel" />
+            <div class="phone-group">
+              <select id="phone2Code" name="phone2Code" aria-label="Country code"></select>
+              <input id="phone2" name="phone2" type="tel" inputmode="tel" />
+            </div>
           </div>
           <div class="field full">
             <label for="email" data-i18n="field.email">Email <span class="muted" data-i18n="optional">(optional)</span></label>
