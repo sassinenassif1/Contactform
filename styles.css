@@ -267,15 +267,15 @@ input[type="date"] { font-family: inherit; }
   align-items: stretch;
 }
 .phone-group select {
-  width: 130px;
+  width: 230px;
   flex-shrink: 0;
-  padding-right: 8px;
-  font-size: 14px;
+  padding-right: 28px;
+  font-size: 14.5px;
+  text-overflow: ellipsis;
 }
-html[dir="rtl"] .phone-group select { width: 130px; }
 .phone-group input { flex: 1; min-width: 0; }
-@media (max-width: 420px) {
-  .phone-group select { width: 110px; font-size: 13px; }
+@media (max-width: 480px) {
+  .phone-group select { width: 160px; font-size: 13px; padding-right: 22px; }
 }
 
 /* ===== Yes / No buttons ===== */
