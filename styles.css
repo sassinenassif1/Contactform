@@ -6,8 +6,8 @@
   --accent: #6366f1;        /* indigo from logo */
   --accent-soft: #a5b4fc;
   --border: rgba(15, 23, 42, 0.08);
-  --glass-bg: rgba(255, 255, 255, 0.22);
-  --glass-border: rgba(255, 255, 255, 0.5);
+  --glass-bg: rgba(255, 255, 255, 0.55);
+  --glass-border: rgba(255, 255, 255, 0.7);
   --glass-shadow:
     0 20px 60px -15px rgba(79, 70, 229, 0.18),
     0 8px 24px -10px rgba(31, 41, 55, 0.12),
@@ -36,7 +36,7 @@ html[dir="rtl"] body {
   font-family: var(--font-ar);
 }
 
-/* ===== Background blobs (vivid so glass blur is actually visible) ===== */
+/* ===== Subtle ambient background (slow, low-opacity, calming) ===== */
 .bg-blobs {
   position: fixed;
   inset: 0;
@@ -47,57 +47,43 @@ html[dir="rtl"] body {
 .blob {
   position: absolute;
   border-radius: 50%;
-  filter: blur(90px);
+  filter: blur(120px);
+  background: radial-gradient(circle, #6366f1 0%, rgba(99, 102, 241, 0) 70%);
 }
 .blob-1 {
   width: 720px; height: 720px;
-  background: radial-gradient(circle, #818cf8 0%, rgba(129, 140, 248, 0) 70%);
-  top: -120px; left: -240px;
-  opacity: 0.95;
-  animation: float-a 22s ease-in-out infinite;
+  top: -200px; left: -180px;
+  opacity: 0.14;
+  animation: drift-a 60s ease-in-out infinite;
 }
 .blob-2 {
-  width: 780px; height: 780px;
-  background: radial-gradient(circle, #c4b5fd 0%, rgba(196, 181, 253, 0) 70%);
-  top: 15%; right: -260px;
-  opacity: 0.95;
-  animation: float-b 26s ease-in-out infinite;
+  width: 820px; height: 820px;
+  top: 40%; right: -260px;
+  opacity: 0.12;
+  animation: drift-b 80s ease-in-out infinite;
 }
 .blob-3 {
-  width: 700px; height: 700px;
-  background: radial-gradient(circle, #67e8f9 0%, rgba(103, 232, 249, 0) 70%);
-  top: 55%; left: -200px;
-  opacity: 0.85;
-  animation: float-c 30s ease-in-out infinite;
-}
-.blob-4 {
-  width: 560px; height: 560px;
-  background: radial-gradient(circle, #f9a8d4 0%, rgba(249, 168, 212, 0) 70%);
-  top: 30%; right: 5%;
-  opacity: 0.75;
-  filter: blur(120px);
-  animation: float-a 28s ease-in-out infinite reverse;
-}
-.blob-5 {
-  width: 520px; height: 520px;
-  background: radial-gradient(circle, #fcd34d 0%, rgba(252, 211, 77, 0) 70%);
-  bottom: -120px; right: -120px;
-  opacity: 0.75;
-  filter: blur(110px);
-  animation: float-b 24s ease-in-out infinite;
+  width: 680px; height: 680px;
+  bottom: -220px; left: 25%;
+  opacity: 0.10;
+  animation: drift-c 70s ease-in-out infinite;
 }
 
-@keyframes float-a {
+@keyframes drift-a {
   0%, 100% { transform: translate(0, 0) scale(1); }
-  50%      { transform: translate(40px, 60px) scale(1.08); }
+  50%      { transform: translate(80px, 120px) scale(1.1); }
 }
-@keyframes float-b {
+@keyframes drift-b {
   0%, 100% { transform: translate(0, 0) scale(1); }
-  50%      { transform: translate(-50px, 40px) scale(1.1); }
+  50%      { transform: translate(-100px, 80px) scale(1.12); }
 }
-@keyframes float-c {
+@keyframes drift-c {
   0%, 100% { transform: translate(0, 0) scale(1); }
-  50%      { transform: translate(30px, -50px) scale(1.05); }
+  50%      { transform: translate(60px, -100px) scale(1.08); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .blob { animation: none; }
 }
 
 /* ===== Glass utility — real frosted effect ===== */
