@@ -2,296 +2,497 @@
 <html lang="en" dir="ltr">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
-  <meta name="theme-color" content="#ffffff" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#fafaf9" />
   <title>VV Clinical Center — Patient Registration</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Tajawal:wght@300;400;500;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-  <!-- Subtle drifting ambient background -->
   <div class="bg-blobs" aria-hidden="true">
     <span class="blob blob-1"></span>
     <span class="blob blob-2"></span>
     <span class="blob blob-3"></span>
   </div>
 
-  <!-- Language toggle -->
-  <div class="lang-toggle glass" role="group" aria-label="Language selection">
-    <button type="button" data-lang="en" class="active">English</button>
-    <button type="button" data-lang="ar">العربية</button>
-  </div>
-
-  <main class="container">
-    <!-- Header -->
-    <header class="header">
-      <div class="logo-wrap glass">
-        <img src="assets/logo.svg" alt="VV Clinical Center" class="logo" />
+  <!-- Top bar: progress + language -->
+  <header class="topbar">
+    <div class="progress"><div class="progress-bar" id="progress-bar"></div></div>
+    <div class="topbar-right">
+      <div class="lang-toggle">
+        <button type="button" data-lang="en" class="active">EN</button>
+        <button type="button" data-lang="ar">AR</button>
       </div>
-      <h1 data-i18n="title">Patient Registration</h1>
-      <p class="subtitle" data-i18n="subtitle">
-        Welcome to VV Clinical Center. Please fill in your details so we can serve you better.
-      </p>
-    </header>
+    </div>
+  </header>
 
-    <form id="registration-form" class="form" novalidate>
+  <!-- Stage holds all the slides; only .active is shown -->
+  <main class="stage" id="stage">
 
-      <!-- Section 1: Personal Info -->
-      <section class="card glass">
-        <h2 data-i18n="section.personal">Personal Information</h2>
-        <div class="grid">
-          <div class="field">
-            <label for="firstName" data-i18n="field.firstName">First Name</label>
-            <input id="firstName" name="firstName" type="text" autocomplete="given-name" required />
-          </div>
-          <div class="field">
-            <label for="lastName" data-i18n="field.lastName">Family Name</label>
-            <input id="lastName" name="lastName" type="text" autocomplete="family-name" required />
-          </div>
-          <div class="field">
-            <label for="dob" data-i18n="field.dob">Date of Birth</label>
-            <input id="dob" name="dob" type="date" required />
-          </div>
-          <div class="field">
-            <label for="gender" data-i18n="field.gender">Gender</label>
-            <select id="gender" name="gender">
-              <option value="" data-i18n="opt.select">Select…</option>
-              <option value="female" data-i18n="opt.female">Female</option>
-              <option value="male" data-i18n="opt.male">Male</option>
-              <option value="other" data-i18n="opt.other">Prefer not to say</option>
-            </select>
-          </div>
-          <div class="field full">
-            <label for="phone1" data-i18n="field.phone1">Phone (WhatsApp)</label>
-            <div class="phone-group">
-              <select id="phone1Code" name="phone1Code" aria-label="Country code" required></select>
-              <input id="phone1" name="phone1" type="tel" inputmode="tel" autocomplete="tel" placeholder="71 123 456" required />
-            </div>
-          </div>
-          <div class="field full">
-            <label for="phone2" data-i18n="field.phone2">Alternate Phone <span class="muted" data-i18n="optional">(optional)</span></label>
-            <div class="phone-group">
-              <select id="phone2Code" name="phone2Code" aria-label="Country code"></select>
-              <input id="phone2" name="phone2" type="tel" inputmode="tel" />
-            </div>
-          </div>
-          <div class="field full">
-            <label for="email" data-i18n="field.email">Email <span class="muted" data-i18n="optional">(optional)</span></label>
-            <input id="email" name="email" type="email" autocomplete="email" />
-          </div>
-          <div class="field full">
-            <label for="address" data-i18n="field.address">Address</label>
-            <textarea id="address" name="address" rows="2" autocomplete="street-address" required></textarea>
-          </div>
+    <!-- ====== Welcome ====== -->
+    <section class="slide active" data-step="welcome" data-type="welcome">
+      <div class="slide-inner welcome-inner">
+        <div class="logo-wrap"><img src="assets/logo.svg" alt="VV Clinical Center" class="logo"/></div>
+        <h1 class="welcome-title" data-i18n="welcome.title">Welcome to VV Clinical Center</h1>
+        <p class="welcome-sub" data-i18n="welcome.sub">A quick form to get you registered — about 2 minutes.</p>
+        <div class="cta-row">
+          <button type="button" class="btn-primary go-next">
+            <span data-i18n="start">Start</span> <span class="arrow">→</span>
+          </button>
+          <span class="enter-hint" data-i18n="enter">press <kbd>Enter</kbd></span>
         </div>
-      </section>
+      </div>
+    </section>
 
-      <!-- Section 2: Medical Questionnaire -->
-      <section class="card glass">
-        <h2 data-i18n="section.medical">Medical Questionnaire</h2>
-        <p class="hint" data-i18n="medical.hint">All answers are confidential and used only for your safe treatment.</p>
-
-        <div class="yes-no-grid">
-          <div class="yn-row">
-            <span data-i18n="med.smoke">Do you smoke?</span>
-            <div class="yn-buttons" data-name="smoke">
-              <input type="radio" id="smoke-yes" name="smoke" value="yes" />
-              <label for="smoke-yes" data-i18n="yes">Yes</label>
-              <input type="radio" id="smoke-no" name="smoke" value="no" />
-              <label for="smoke-no" data-i18n="no">No</label>
-            </div>
-          </div>
-
-          <div class="yn-row">
-            <span data-i18n="med.allergies">Any allergies?</span>
-            <div class="yn-buttons" data-name="allergies">
-              <input type="radio" id="alg-yes" name="allergies" value="yes" />
-              <label for="alg-yes" data-i18n="yes">Yes</label>
-              <input type="radio" id="alg-no" name="allergies" value="no" />
-              <label for="alg-no" data-i18n="no">No</label>
-            </div>
-          </div>
-
-          <div class="yn-row">
-            <span data-i18n="med.diabetes">Diabetes?</span>
-            <div class="yn-buttons" data-name="diabetes">
-              <input type="radio" id="dia-yes" name="diabetes" value="yes" />
-              <label for="dia-yes" data-i18n="yes">Yes</label>
-              <input type="radio" id="dia-no" name="diabetes" value="no" />
-              <label for="dia-no" data-i18n="no">No</label>
-            </div>
-          </div>
-
-          <div class="yn-row">
-            <span data-i18n="med.heart">Heart problems?</span>
-            <div class="yn-buttons" data-name="heart">
-              <input type="radio" id="hrt-yes" name="heart" value="yes" />
-              <label for="hrt-yes" data-i18n="yes">Yes</label>
-              <input type="radio" id="hrt-no" name="heart" value="no" />
-              <label for="hrt-no" data-i18n="no">No</label>
-            </div>
-          </div>
-
-          <div class="yn-row">
-            <span data-i18n="med.pregnant">Currently pregnant or breastfeeding?</span>
-            <div class="yn-buttons" data-name="pregnant">
-              <input type="radio" id="prg-yes" name="pregnant" value="yes" />
-              <label for="prg-yes" data-i18n="yes">Yes</label>
-              <input type="radio" id="prg-no" name="pregnant" value="no" />
-              <label for="prg-no" data-i18n="no">No</label>
-              <input type="radio" id="prg-na" name="pregnant" value="na" />
-              <label for="prg-na" data-i18n="na">N/A</label>
-            </div>
-          </div>
-
-          <div class="yn-row">
-            <span data-i18n="med.children">Do you have children under 18?</span>
-            <div class="yn-buttons" data-name="kids">
-              <input type="radio" id="kids-yes" name="kids" value="yes" />
-              <label for="kids-yes" data-i18n="yes">Yes</label>
-              <input type="radio" id="kids-no" name="kids" value="no" />
-              <label for="kids-no" data-i18n="no">No</label>
-            </div>
-          </div>
+    <!-- ====== Q1: First name ====== -->
+    <section class="slide" data-step="firstName" data-type="text" data-required="1">
+      <div class="slide-inner">
+        <div class="q-num"><span class="num">1</span><span class="arrow-tiny">→</span></div>
+        <h2 class="q-title" data-i18n="q.firstName">What's your first name?</h2>
+        <p class="q-sub" data-i18n="q.firstName.sub">So we know what to call you.</p>
+        <input class="big-input" name="firstName" type="text" autocomplete="given-name" data-i18n-attr="placeholder" data-i18n-placeholder="ph.typeHere" placeholder="Type your answer here…" required />
+        <div class="cta-row">
+          <button type="button" class="btn-primary go-next">
+            <span data-i18n="ok">OK</span> <span class="check">✓</span>
+          </button>
+          <span class="enter-hint" data-i18n="enter">press <kbd>Enter</kbd></span>
         </div>
+      </div>
+    </section>
 
-        <div class="field full">
-          <label for="medicalNotes" data-i18n="med.notes">Any other medical conditions or medications we should know about?</label>
-          <textarea id="medicalNotes" name="medicalNotes" rows="2"></textarea>
+    <!-- ====== Q2: Family name ====== -->
+    <section class="slide" data-step="lastName" data-type="text" data-required="1">
+      <div class="slide-inner">
+        <div class="q-num"><span class="num">2</span><span class="arrow-tiny">→</span></div>
+        <h2 class="q-title" data-i18n="q.lastName">And your family name?</h2>
+        <input class="big-input" name="lastName" type="text" autocomplete="family-name" data-i18n-attr="placeholder" data-i18n-placeholder="ph.typeHere" placeholder="Type your answer here…" required />
+        <div class="cta-row">
+          <button type="button" class="btn-primary go-next"><span data-i18n="ok">OK</span> <span class="check">✓</span></button>
+          <span class="enter-hint" data-i18n="enter">press <kbd>Enter</kbd></span>
         </div>
-      </section>
+      </div>
+    </section>
 
-      <!-- Section 3: Preferences (segmentation) -->
-      <section class="card glass">
-        <h2 data-i18n="section.prefs">A Few More Questions</h2>
-        <p class="hint" data-i18n="prefs.hint">Helps us offer you the right services at the right time.</p>
-
-        <div class="grid">
-          <div class="field">
-            <label for="hearAbout" data-i18n="field.hearAbout">How did you hear about us?</label>
-            <select id="hearAbout" name="hearAbout">
-              <option value="" data-i18n="opt.select">Select…</option>
-              <option value="friend" data-i18n="opt.friend">Friend / Family</option>
-              <option value="instagram" data-i18n="opt.instagram">Instagram</option>
-              <option value="facebook" data-i18n="opt.facebook">Facebook</option>
-              <option value="google" data-i18n="opt.google">Google Search</option>
-              <option value="tiktok" data-i18n="opt.tiktok">TikTok</option>
-              <option value="walk" data-i18n="opt.walk">Walk-in / Sign</option>
-              <option value="other" data-i18n="opt.other2">Other</option>
-            </select>
-          </div>
-
-          <div class="field">
-            <label for="lastVisit" data-i18n="field.lastVisit">Last dental visit</label>
-            <select id="lastVisit" name="lastVisit">
-              <option value="" data-i18n="opt.select">Select…</option>
-              <option value="6m" data-i18n="opt.lv1">Less than 6 months</option>
-              <option value="1y" data-i18n="opt.lv2">6–12 months</option>
-              <option value="2y" data-i18n="opt.lv3">1–2 years</option>
-              <option value="5y" data-i18n="opt.lv4">More than 2 years</option>
-              <option value="never" data-i18n="opt.lv5">Never</option>
-            </select>
-          </div>
-
-          <div class="field full">
-            <label data-i18n="field.interests">I'm interested in <span class="muted" data-i18n="checkAll">(check all that apply)</span></label>
-            <div class="chips">
-              <label class="chip"><input type="checkbox" name="interests" value="cleaning"/><span data-i18n="int.cleaning">Cleaning & Hygiene</span></label>
-              <label class="chip"><input type="checkbox" name="interests" value="whitening"/><span data-i18n="int.whitening">Whitening</span></label>
-              <label class="chip"><input type="checkbox" name="interests" value="ortho"/><span data-i18n="int.ortho">Orthodontics / Aligners</span></label>
-              <label class="chip"><input type="checkbox" name="interests" value="implants"/><span data-i18n="int.implants">Implants</span></label>
-              <label class="chip"><input type="checkbox" name="interests" value="cosmetic"/><span data-i18n="int.cosmetic">Cosmetic / Veneers</span></label>
-              <label class="chip"><input type="checkbox" name="interests" value="pediatric"/><span data-i18n="int.pediatric">Pediatric Dentistry</span></label>
-              <label class="chip"><input type="checkbox" name="interests" value="rootcanal"/><span data-i18n="int.rootcanal">Root Canal</span></label>
-              <label class="chip"><input type="checkbox" name="interests" value="emergency"/><span data-i18n="int.emergency">Emergency Care</span></label>
-            </div>
-          </div>
-
-          <div class="field">
-            <label for="insurance" data-i18n="field.insurance">Insurance provider <span class="muted" data-i18n="optional">(optional)</span></label>
-            <input id="insurance" name="insurance" type="text" />
-          </div>
-
-          <div class="field">
-            <label for="occupation" data-i18n="field.occupation">Occupation <span class="muted" data-i18n="optional">(optional)</span></label>
-            <input id="occupation" name="occupation" type="text" />
-          </div>
-
-          <div class="field">
-            <label for="apptTime" data-i18n="field.apptTime">Preferred appointment time</label>
-            <select id="apptTime" name="apptTime">
-              <option value="" data-i18n="opt.select">Select…</option>
-              <option value="weekday-morning" data-i18n="opt.tm1">Weekday morning</option>
-              <option value="weekday-afternoon" data-i18n="opt.tm2">Weekday afternoon</option>
-              <option value="weekday-evening" data-i18n="opt.tm3">Weekday evening</option>
-              <option value="weekend" data-i18n="opt.tm4">Weekend</option>
-            </select>
-          </div>
-
-          <div class="field">
-            <label for="contactPref" data-i18n="field.contactPref">Best way to reach you</label>
-            <select id="contactPref" name="contactPref">
-              <option value="whatsapp" data-i18n="opt.ch1">WhatsApp</option>
-              <option value="call" data-i18n="opt.ch2">Phone call</option>
-              <option value="sms" data-i18n="opt.ch3">SMS</option>
-              <option value="email" data-i18n="opt.ch4">Email</option>
-            </select>
-          </div>
-
-          <div class="field full">
-            <label class="check-row">
-              <input type="checkbox" name="marketingConsent" value="yes" />
-              <span data-i18n="consent.marketing">I'd like to receive appointment reminders, offers and health tips from VV Clinical Center.</span>
-            </label>
-          </div>
+    <!-- ====== Q3: DOB ====== -->
+    <section class="slide" data-step="dob" data-type="date" data-required="1">
+      <div class="slide-inner">
+        <div class="q-num"><span class="num">3</span><span class="arrow-tiny">→</span></div>
+        <h2 class="q-title" data-i18n="q.dob">When were you born?</h2>
+        <input class="big-input" name="dob" type="date" required />
+        <div class="cta-row">
+          <button type="button" class="btn-primary go-next"><span data-i18n="ok">OK</span> <span class="check">✓</span></button>
+          <span class="enter-hint" data-i18n="enter">press <kbd>Enter</kbd></span>
         </div>
-      </section>
+      </div>
+    </section>
 
-      <!-- Section 4: Review -->
-      <section class="card glass">
-        <h2 data-i18n="section.review">Leave Us a Review</h2>
-        <p class="hint" data-i18n="review.hint">If you've visited us before, your feedback means the world. You can also share it on Google in one click.</p>
-
-        <div class="rating" role="radiogroup" aria-label="Star rating">
-          <input type="radio" id="star5" name="rating" value="5" /><label for="star5" aria-label="5 stars">★</label>
-          <input type="radio" id="star4" name="rating" value="4" /><label for="star4" aria-label="4 stars">★</label>
-          <input type="radio" id="star3" name="rating" value="3" /><label for="star3" aria-label="3 stars">★</label>
-          <input type="radio" id="star2" name="rating" value="2" /><label for="star2" aria-label="2 stars">★</label>
-          <input type="radio" id="star1" name="rating" value="1" /><label for="star1" aria-label="1 star">★</label>
+    <!-- ====== Q4: Gender (single choice) ====== -->
+    <section class="slide" data-step="gender" data-type="single">
+      <div class="slide-inner">
+        <div class="q-num"><span class="num">4</span><span class="arrow-tiny">→</span></div>
+        <h2 class="q-title" data-i18n="q.gender">Gender</h2>
+        <p class="q-sub" data-i18n="q.optional">Optional — select if you'd like.</p>
+        <div class="choices" data-name="gender">
+          <label class="choice"><input type="radio" name="gender" value="female"><span class="letter">A</span><span class="ctext" data-i18n="opt.female">Female</span></label>
+          <label class="choice"><input type="radio" name="gender" value="male"><span class="letter">B</span><span class="ctext" data-i18n="opt.male">Male</span></label>
+          <label class="choice"><input type="radio" name="gender" value="other"><span class="letter">C</span><span class="ctext" data-i18n="opt.other">Prefer not to say</span></label>
         </div>
-
-        <div class="field full">
-          <label for="reviewText" data-i18n="field.review">Your review</label>
-          <textarea id="reviewText" name="reviewText" rows="4" data-i18n-attr="placeholder" data-i18n-placeholder="review.placeholder" placeholder="What did you love? Anything we can improve?"></textarea>
+        <div class="cta-row">
+          <button type="button" class="btn-primary go-next"><span data-i18n="ok">OK</span> <span class="check">✓</span></button>
+          <span class="enter-hint" data-i18n="enter">press <kbd>Enter</kbd></span>
         </div>
+      </div>
+    </section>
 
-        <button type="button" id="post-google" class="btn-google">
-          <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.76h3.56c2.08-1.92 3.28-4.74 3.28-8.09Z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.56-2.76c-.99.66-2.25 1.06-3.72 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84A11 11 0 0 0 12 23Z"/><path fill="#FBBC05" d="M5.84 14.11A6.6 6.6 0 0 1 5.5 12c0-.73.13-1.45.34-2.11V7.05H2.18A11 11 0 0 0 1 12c0 1.77.42 3.45 1.18 4.95l3.66-2.84Z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.05l3.66 2.84C6.71 7.31 9.14 5.38 12 5.38Z"/></svg>
-          <span data-i18n="review.postGoogle">Post my review on Google</span>
+    <!-- ====== Q5: Phone ====== -->
+    <section class="slide" data-step="phone1" data-type="phone" data-required="1">
+      <div class="slide-inner">
+        <div class="q-num"><span class="num">5</span><span class="arrow-tiny">→</span></div>
+        <h2 class="q-title" data-i18n="q.phone1">What's your phone number?</h2>
+        <p class="q-sub" data-i18n="q.phone1.sub">We'll use WhatsApp to confirm appointments.</p>
+        <div class="phone-group">
+          <select class="big-input code-select" id="phone1Code" name="phone1Code" required></select>
+          <input class="big-input" name="phone1" type="tel" inputmode="tel" autocomplete="tel" placeholder="71 123 456" required />
+        </div>
+        <div class="cta-row">
+          <button type="button" class="btn-primary go-next"><span data-i18n="ok">OK</span> <span class="check">✓</span></button>
+          <span class="enter-hint" data-i18n="enter">press <kbd>Enter</kbd></span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====== Q6: Alt phone ====== -->
+    <section class="slide" data-step="phone2" data-type="phone">
+      <div class="slide-inner">
+        <div class="q-num"><span class="num">6</span><span class="arrow-tiny">→</span></div>
+        <h2 class="q-title" data-i18n="q.phone2">Any alternate number?</h2>
+        <p class="q-sub" data-i18n="q.optional">Optional — leave empty to skip.</p>
+        <div class="phone-group">
+          <select class="big-input code-select" id="phone2Code" name="phone2Code"></select>
+          <input class="big-input" name="phone2" type="tel" inputmode="tel" />
+        </div>
+        <div class="cta-row">
+          <button type="button" class="btn-primary go-next"><span data-i18n="ok">OK</span> <span class="check">✓</span></button>
+          <span class="enter-hint" data-i18n="enter">press <kbd>Enter</kbd></span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====== Q7: Email ====== -->
+    <section class="slide" data-step="email" data-type="text">
+      <div class="slide-inner">
+        <div class="q-num"><span class="num">7</span><span class="arrow-tiny">→</span></div>
+        <h2 class="q-title" data-i18n="q.email">Your email?</h2>
+        <p class="q-sub" data-i18n="q.optional">Optional — leave empty to skip.</p>
+        <input class="big-input" name="email" type="email" autocomplete="email" placeholder="name@example.com" />
+        <div class="cta-row">
+          <button type="button" class="btn-primary go-next"><span data-i18n="ok">OK</span> <span class="check">✓</span></button>
+          <span class="enter-hint" data-i18n="enter">press <kbd>Enter</kbd></span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====== Q8: Address ====== -->
+    <section class="slide" data-step="address" data-type="textarea" data-required="1">
+      <div class="slide-inner">
+        <div class="q-num"><span class="num">8</span><span class="arrow-tiny">→</span></div>
+        <h2 class="q-title" data-i18n="q.address">Your address?</h2>
+        <textarea class="big-input" name="address" rows="2" autocomplete="street-address" required data-i18n-attr="placeholder" data-i18n-placeholder="ph.address" placeholder="Street, building, area, city…"></textarea>
+        <div class="cta-row">
+          <button type="button" class="btn-primary go-next"><span data-i18n="ok">OK</span> <span class="check">✓</span></button>
+          <span class="enter-hint" data-i18n="enter">press <kbd>Shift + Enter</kbd></span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====== Section divider: Medical ====== -->
+    <section class="slide" data-step="med-intro" data-type="info">
+      <div class="slide-inner">
+        <div class="q-section" data-i18n="sec.medical">Medical questionnaire</div>
+        <h2 class="q-title" data-i18n="medIntro.title">A few quick health questions</h2>
+        <p class="q-sub" data-i18n="medIntro.sub">Confidential — only used for your safe treatment.</p>
+        <div class="cta-row">
+          <button type="button" class="btn-primary go-next"><span data-i18n="continue">Continue</span> <span class="arrow">→</span></button>
+          <span class="enter-hint" data-i18n="enter">press <kbd>Enter</kbd></span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====== Q9: Smoke ====== -->
+    <section class="slide" data-step="smoke" data-type="single" data-required="1">
+      <div class="slide-inner">
+        <div class="q-num"><span class="num">9</span><span class="arrow-tiny">→</span></div>
+        <h2 class="q-title" data-i18n="q.smoke">Do you smoke?</h2>
+        <div class="choices" data-name="smoke">
+          <label class="choice"><input type="radio" name="smoke" value="yes"><span class="letter">A</span><span class="ctext" data-i18n="yes">Yes</span></label>
+          <label class="choice"><input type="radio" name="smoke" value="no"><span class="letter">B</span><span class="ctext" data-i18n="no">No</span></label>
+        </div>
+        <div class="cta-row">
+          <span class="enter-hint" data-i18n="autoNext">A choice will move you forward.</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====== Q10: Allergies ====== -->
+    <section class="slide" data-step="allergies" data-type="single" data-required="1">
+      <div class="slide-inner">
+        <div class="q-num"><span class="num">10</span><span class="arrow-tiny">→</span></div>
+        <h2 class="q-title" data-i18n="q.allergies">Any allergies?</h2>
+        <div class="choices" data-name="allergies">
+          <label class="choice"><input type="radio" name="allergies" value="yes"><span class="letter">A</span><span class="ctext" data-i18n="yes">Yes</span></label>
+          <label class="choice"><input type="radio" name="allergies" value="no"><span class="letter">B</span><span class="ctext" data-i18n="no">No</span></label>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====== Q11: Diabetes ====== -->
+    <section class="slide" data-step="diabetes" data-type="single" data-required="1">
+      <div class="slide-inner">
+        <div class="q-num"><span class="num">11</span><span class="arrow-tiny">→</span></div>
+        <h2 class="q-title" data-i18n="q.diabetes">Do you have diabetes?</h2>
+        <div class="choices" data-name="diabetes">
+          <label class="choice"><input type="radio" name="diabetes" value="yes"><span class="letter">A</span><span class="ctext" data-i18n="yes">Yes</span></label>
+          <label class="choice"><input type="radio" name="diabetes" value="no"><span class="letter">B</span><span class="ctext" data-i18n="no">No</span></label>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====== Q12: Heart ====== -->
+    <section class="slide" data-step="heart" data-type="single" data-required="1">
+      <div class="slide-inner">
+        <div class="q-num"><span class="num">12</span><span class="arrow-tiny">→</span></div>
+        <h2 class="q-title" data-i18n="q.heart">Any heart problems?</h2>
+        <div class="choices" data-name="heart">
+          <label class="choice"><input type="radio" name="heart" value="yes"><span class="letter">A</span><span class="ctext" data-i18n="yes">Yes</span></label>
+          <label class="choice"><input type="radio" name="heart" value="no"><span class="letter">B</span><span class="ctext" data-i18n="no">No</span></label>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====== Q13: Pregnancy ====== -->
+    <section class="slide" data-step="pregnant" data-type="single">
+      <div class="slide-inner">
+        <div class="q-num"><span class="num">13</span><span class="arrow-tiny">→</span></div>
+        <h2 class="q-title" data-i18n="q.pregnant">Currently pregnant or breastfeeding?</h2>
+        <div class="choices" data-name="pregnant">
+          <label class="choice"><input type="radio" name="pregnant" value="yes"><span class="letter">A</span><span class="ctext" data-i18n="yes">Yes</span></label>
+          <label class="choice"><input type="radio" name="pregnant" value="no"><span class="letter">B</span><span class="ctext" data-i18n="no">No</span></label>
+          <label class="choice"><input type="radio" name="pregnant" value="na"><span class="letter">C</span><span class="ctext" data-i18n="na">Not applicable</span></label>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====== Q14: Children ====== -->
+    <section class="slide" data-step="kids" data-type="single" data-required="1">
+      <div class="slide-inner">
+        <div class="q-num"><span class="num">14</span><span class="arrow-tiny">→</span></div>
+        <h2 class="q-title" data-i18n="q.kids">Children under 18 at home?</h2>
+        <div class="choices" data-name="kids">
+          <label class="choice"><input type="radio" name="kids" value="yes"><span class="letter">A</span><span class="ctext" data-i18n="yes">Yes</span></label>
+          <label class="choice"><input type="radio" name="kids" value="no"><span class="letter">B</span><span class="ctext" data-i18n="no">No</span></label>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====== Q15: Medical notes ====== -->
+    <section class="slide" data-step="medicalNotes" data-type="textarea">
+      <div class="slide-inner">
+        <div class="q-num"><span class="num">15</span><span class="arrow-tiny">→</span></div>
+        <h2 class="q-title" data-i18n="q.medNotes">Anything else we should know?</h2>
+        <p class="q-sub" data-i18n="q.medNotes.sub">Other conditions, medications, or concerns.</p>
+        <textarea class="big-input" name="medicalNotes" rows="2" data-i18n-attr="placeholder" data-i18n-placeholder="ph.optionalTxt" placeholder="Optional…"></textarea>
+        <div class="cta-row">
+          <button type="button" class="btn-primary go-next"><span data-i18n="ok">OK</span> <span class="check">✓</span></button>
+          <span class="enter-hint" data-i18n="enter">press <kbd>Shift + Enter</kbd></span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====== Section divider: A bit about you ====== -->
+    <section class="slide" data-step="prefs-intro" data-type="info">
+      <div class="slide-inner">
+        <div class="q-section" data-i18n="sec.prefs">A bit about you</div>
+        <h2 class="q-title" data-i18n="prefsIntro.title">Help us serve you better</h2>
+        <p class="q-sub" data-i18n="prefsIntro.sub">A few short preference questions.</p>
+        <div class="cta-row">
+          <button type="button" class="btn-primary go-next"><span data-i18n="continue">Continue</span> <span class="arrow">→</span></button>
+          <span class="enter-hint" data-i18n="enter">press <kbd>Enter</kbd></span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====== Q16: How did you hear ====== -->
+    <section class="slide" data-step="hearAbout" data-type="single">
+      <div class="slide-inner">
+        <div class="q-num"><span class="num">16</span><span class="arrow-tiny">→</span></div>
+        <h2 class="q-title" data-i18n="q.hearAbout">How did you hear about us?</h2>
+        <div class="choices" data-name="hearAbout">
+          <label class="choice"><input type="radio" name="hearAbout" value="friend"><span class="letter">A</span><span class="ctext" data-i18n="opt.friend">Friend / Family</span></label>
+          <label class="choice"><input type="radio" name="hearAbout" value="instagram"><span class="letter">B</span><span class="ctext" data-i18n="opt.instagram">Instagram</span></label>
+          <label class="choice"><input type="radio" name="hearAbout" value="facebook"><span class="letter">C</span><span class="ctext" data-i18n="opt.facebook">Facebook</span></label>
+          <label class="choice"><input type="radio" name="hearAbout" value="google"><span class="letter">D</span><span class="ctext" data-i18n="opt.google">Google search</span></label>
+          <label class="choice"><input type="radio" name="hearAbout" value="tiktok"><span class="letter">E</span><span class="ctext" data-i18n="opt.tiktok">TikTok</span></label>
+          <label class="choice"><input type="radio" name="hearAbout" value="walk"><span class="letter">F</span><span class="ctext" data-i18n="opt.walk">Walk-in / Sign</span></label>
+          <label class="choice"><input type="radio" name="hearAbout" value="other"><span class="letter">G</span><span class="ctext" data-i18n="opt.other2">Other</span></label>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====== Q17: Last visit ====== -->
+    <section class="slide" data-step="lastVisit" data-type="single">
+      <div class="slide-inner">
+        <div class="q-num"><span class="num">17</span><span class="arrow-tiny">→</span></div>
+        <h2 class="q-title" data-i18n="q.lastVisit">When was your last dental visit?</h2>
+        <div class="choices" data-name="lastVisit">
+          <label class="choice"><input type="radio" name="lastVisit" value="6m"><span class="letter">A</span><span class="ctext" data-i18n="opt.lv1">Less than 6 months</span></label>
+          <label class="choice"><input type="radio" name="lastVisit" value="1y"><span class="letter">B</span><span class="ctext" data-i18n="opt.lv2">6 – 12 months</span></label>
+          <label class="choice"><input type="radio" name="lastVisit" value="2y"><span class="letter">C</span><span class="ctext" data-i18n="opt.lv3">1 – 2 years</span></label>
+          <label class="choice"><input type="radio" name="lastVisit" value="5y"><span class="letter">D</span><span class="ctext" data-i18n="opt.lv4">More than 2 years</span></label>
+          <label class="choice"><input type="radio" name="lastVisit" value="never"><span class="letter">E</span><span class="ctext" data-i18n="opt.lv5">Never</span></label>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====== Q18: Interests ====== -->
+    <section class="slide" data-step="interests" data-type="multi">
+      <div class="slide-inner">
+        <div class="q-num"><span class="num">18</span><span class="arrow-tiny">→</span></div>
+        <h2 class="q-title" data-i18n="q.interests">What are you interested in?</h2>
+        <p class="q-sub" data-i18n="q.multiHint">Choose as many as you like.</p>
+        <div class="choices" data-name="interests">
+          <label class="choice"><input type="checkbox" name="interests" value="cleaning"><span class="letter">A</span><span class="ctext" data-i18n="int.cleaning">Cleaning & Hygiene</span></label>
+          <label class="choice"><input type="checkbox" name="interests" value="whitening"><span class="letter">B</span><span class="ctext" data-i18n="int.whitening">Whitening</span></label>
+          <label class="choice"><input type="checkbox" name="interests" value="ortho"><span class="letter">C</span><span class="ctext" data-i18n="int.ortho">Orthodontics / Aligners</span></label>
+          <label class="choice"><input type="checkbox" name="interests" value="implants"><span class="letter">D</span><span class="ctext" data-i18n="int.implants">Implants</span></label>
+          <label class="choice"><input type="checkbox" name="interests" value="cosmetic"><span class="letter">E</span><span class="ctext" data-i18n="int.cosmetic">Cosmetic / Veneers</span></label>
+          <label class="choice"><input type="checkbox" name="interests" value="pediatric"><span class="letter">F</span><span class="ctext" data-i18n="int.pediatric">Pediatric Dentistry</span></label>
+          <label class="choice"><input type="checkbox" name="interests" value="rootcanal"><span class="letter">G</span><span class="ctext" data-i18n="int.rootcanal">Root canal</span></label>
+          <label class="choice"><input type="checkbox" name="interests" value="emergency"><span class="letter">H</span><span class="ctext" data-i18n="int.emergency">Emergency care</span></label>
+        </div>
+        <div class="cta-row">
+          <button type="button" class="btn-primary go-next"><span data-i18n="ok">OK</span> <span class="check">✓</span></button>
+          <span class="enter-hint" data-i18n="enter">press <kbd>Enter</kbd></span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====== Q19: Insurance ====== -->
+    <section class="slide" data-step="insurance" data-type="text">
+      <div class="slide-inner">
+        <div class="q-num"><span class="num">19</span><span class="arrow-tiny">→</span></div>
+        <h2 class="q-title" data-i18n="q.insurance">Insurance provider?</h2>
+        <p class="q-sub" data-i18n="q.optional">Optional — leave empty to skip.</p>
+        <input class="big-input" name="insurance" type="text" data-i18n-attr="placeholder" data-i18n-placeholder="ph.companyName" placeholder="Company name" />
+        <div class="cta-row">
+          <button type="button" class="btn-primary go-next"><span data-i18n="ok">OK</span> <span class="check">✓</span></button>
+          <span class="enter-hint" data-i18n="enter">press <kbd>Enter</kbd></span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====== Q20: Occupation ====== -->
+    <section class="slide" data-step="occupation" data-type="text">
+      <div class="slide-inner">
+        <div class="q-num"><span class="num">20</span><span class="arrow-tiny">→</span></div>
+        <h2 class="q-title" data-i18n="q.occupation">What do you do?</h2>
+        <p class="q-sub" data-i18n="q.optional">Optional — leave empty to skip.</p>
+        <input class="big-input" name="occupation" type="text" data-i18n-attr="placeholder" data-i18n-placeholder="ph.occupation" placeholder="Occupation" />
+        <div class="cta-row">
+          <button type="button" class="btn-primary go-next"><span data-i18n="ok">OK</span> <span class="check">✓</span></button>
+          <span class="enter-hint" data-i18n="enter">press <kbd>Enter</kbd></span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====== Q21: Appt time ====== -->
+    <section class="slide" data-step="apptTime" data-type="single">
+      <div class="slide-inner">
+        <div class="q-num"><span class="num">21</span><span class="arrow-tiny">→</span></div>
+        <h2 class="q-title" data-i18n="q.apptTime">When do you prefer your appointments?</h2>
+        <div class="choices" data-name="apptTime">
+          <label class="choice"><input type="radio" name="apptTime" value="weekday-morning"><span class="letter">A</span><span class="ctext" data-i18n="opt.tm1">Weekday morning</span></label>
+          <label class="choice"><input type="radio" name="apptTime" value="weekday-afternoon"><span class="letter">B</span><span class="ctext" data-i18n="opt.tm2">Weekday afternoon</span></label>
+          <label class="choice"><input type="radio" name="apptTime" value="weekday-evening"><span class="letter">C</span><span class="ctext" data-i18n="opt.tm3">Weekday evening</span></label>
+          <label class="choice"><input type="radio" name="apptTime" value="weekend"><span class="letter">D</span><span class="ctext" data-i18n="opt.tm4">Weekend</span></label>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====== Q22: Contact pref ====== -->
+    <section class="slide" data-step="contactPref" data-type="single">
+      <div class="slide-inner">
+        <div class="q-num"><span class="num">22</span><span class="arrow-tiny">→</span></div>
+        <h2 class="q-title" data-i18n="q.contactPref">Best way to reach you?</h2>
+        <div class="choices" data-name="contactPref">
+          <label class="choice"><input type="radio" name="contactPref" value="whatsapp"><span class="letter">A</span><span class="ctext" data-i18n="opt.ch1">WhatsApp</span></label>
+          <label class="choice"><input type="radio" name="contactPref" value="call"><span class="letter">B</span><span class="ctext" data-i18n="opt.ch2">Phone call</span></label>
+          <label class="choice"><input type="radio" name="contactPref" value="sms"><span class="letter">C</span><span class="ctext" data-i18n="opt.ch3">SMS</span></label>
+          <label class="choice"><input type="radio" name="contactPref" value="email"><span class="letter">D</span><span class="ctext" data-i18n="opt.ch4">Email</span></label>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====== Q23: Marketing consent ====== -->
+    <section class="slide" data-step="marketingConsent" data-type="single">
+      <div class="slide-inner">
+        <div class="q-num"><span class="num">23</span><span class="arrow-tiny">→</span></div>
+        <h2 class="q-title" data-i18n="q.consent">Reminders, offers & health tips?</h2>
+        <p class="q-sub" data-i18n="q.consent.sub">Occasional WhatsApp messages — opt out any time.</p>
+        <div class="choices" data-name="marketingConsent">
+          <label class="choice"><input type="radio" name="marketingConsent" value="yes"><span class="letter">A</span><span class="ctext" data-i18n="opt.consentYes">Yes please</span></label>
+          <label class="choice"><input type="radio" name="marketingConsent" value="no"><span class="letter">B</span><span class="ctext" data-i18n="opt.consentNo">No thanks</span></label>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====== Section divider: Review ====== -->
+    <section class="slide" data-step="review-intro" data-type="info">
+      <div class="slide-inner">
+        <div class="q-section" data-i18n="sec.review">Review</div>
+        <h2 class="q-title" data-i18n="reviewIntro.title">Visited us before?</h2>
+        <p class="q-sub" data-i18n="reviewIntro.sub">If yes, we'd love a quick rating. If not, just skip ahead.</p>
+        <div class="cta-row">
+          <button type="button" class="btn-primary go-next"><span data-i18n="continue">Continue</span> <span class="arrow">→</span></button>
+          <span class="enter-hint" data-i18n="enter">press <kbd>Enter</kbd></span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====== Q24: Rating ====== -->
+    <section class="slide" data-step="rating" data-type="rating">
+      <div class="slide-inner">
+        <div class="q-num"><span class="num">24</span><span class="arrow-tiny">→</span></div>
+        <h2 class="q-title" data-i18n="q.rating">How would you rate your experience?</h2>
+        <div class="rating-big" role="radiogroup" data-name="rating">
+          <button type="button" class="star" data-value="1" aria-label="1 star">★</button>
+          <button type="button" class="star" data-value="2" aria-label="2 stars">★</button>
+          <button type="button" class="star" data-value="3" aria-label="3 stars">★</button>
+          <button type="button" class="star" data-value="4" aria-label="4 stars">★</button>
+          <button type="button" class="star" data-value="5" aria-label="5 stars">★</button>
+        </div>
+        <input type="hidden" name="rating" value=""/>
+        <div class="cta-row">
+          <button type="button" class="btn-primary go-next"><span data-i18n="ok">OK</span> <span class="check">✓</span></button>
+          <span class="enter-hint" data-i18n="enter">press <kbd>Enter</kbd></span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====== Q25: Review text ====== -->
+    <section class="slide" data-step="reviewText" data-type="textarea">
+      <div class="slide-inner">
+        <div class="q-num"><span class="num">25</span><span class="arrow-tiny">→</span></div>
+        <h2 class="q-title" data-i18n="q.review">Tell us in your own words</h2>
+        <p class="q-sub" data-i18n="q.review.sub">Loved something? Anything we can improve?</p>
+        <textarea class="big-input" name="reviewText" rows="3" data-i18n-attr="placeholder" data-i18n-placeholder="review.placeholder" placeholder="What did you love? Anything we can improve?"></textarea>
+
+        <button type="button" id="post-google" class="btn-ghost">
+          <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.76h3.56c2.08-1.92 3.28-4.74 3.28-8.09Z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.56-2.76c-.99.66-2.25 1.06-3.72 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84A11 11 0 0 0 12 23Z"/><path fill="#FBBC05" d="M5.84 14.11A6.6 6.6 0 0 1 5.5 12c0-.73.13-1.45.34-2.11V7.05H2.18A11 11 0 0 0 1 12c0 1.77.42 3.45 1.18 4.95l3.66-2.84Z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.05l3.66 2.84C6.71 7.31 9.14 5.38 12 5.38Z"/></svg>
+          <span data-i18n="review.postGoogle">Also post this on Google</span>
         </button>
-        <p class="hint small" data-i18n="review.googleNote">We'll copy your review to your clipboard and open Google so you can paste & submit.</p>
-      </section>
 
-      <!-- Submit -->
-      <div class="submit-row">
-        <button type="submit" class="btn-primary" data-i18n="submit">Submit Registration</button>
+        <div class="cta-row">
+          <button type="button" class="btn-primary go-next"><span data-i18n="ok">OK</span> <span class="check">✓</span></button>
+          <span class="enter-hint" data-i18n="enter">press <kbd>Shift + Enter</kbd></span>
+        </div>
       </div>
+    </section>
 
-      <p class="footer-note" data-i18n="footer">Your information is kept private and used only by VV Clinical Center.</p>
-    </form>
+    <!-- ====== Submit ====== -->
+    <section class="slide" data-step="submit" data-type="submit">
+      <div class="slide-inner welcome-inner">
+        <div class="q-section" data-i18n="sec.finish">All done</div>
+        <h2 class="q-title" data-i18n="submit.title">Ready to send your registration?</h2>
+        <p class="q-sub" data-i18n="submit.sub">Tap the button below — we'll be in touch shortly.</p>
+        <div class="cta-row">
+          <button type="button" id="submit-btn" class="btn-primary big">
+            <span data-i18n="submit">Submit</span> <span class="arrow">→</span>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====== Thank you ====== -->
+    <section class="slide" data-step="thanks" data-type="end">
+      <div class="slide-inner welcome-inner">
+        <div class="check-circle">✓</div>
+        <h2 class="q-title" data-i18n="thanks.title">Thank you!</h2>
+        <p class="q-sub" data-i18n="thanks.sub">Your registration has been received. We'll see you soon.</p>
+      </div>
+    </section>
+
   </main>
 
-  <!-- Success modal -->
-  <div id="success-modal" class="modal" hidden>
-    <div class="modal-card glass">
-      <div class="check-circle" aria-hidden="true">✓</div>
-      <h3 data-i18n="success.title">Thank you!</h3>
-      <p data-i18n="success.body">Your registration has been received. We'll be in touch soon.</p>
-      <button type="button" id="close-modal" class="btn-primary" data-i18n="close">Close</button>
-    </div>
+  <!-- Bottom nav (up/down) -->
+  <div class="nav-arrows">
+    <button type="button" id="nav-prev" aria-label="Previous" disabled>▲</button>
+    <button type="button" id="nav-next" aria-label="Next">▼</button>
   </div>
+
+  <!-- Hidden form for collecting all values on submit -->
+  <form id="registration-form" hidden></form>
 
   <script src="script.js"></script>
 </body>
